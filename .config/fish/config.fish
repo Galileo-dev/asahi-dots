@@ -20,3 +20,8 @@ fish_add_path /home/llawliet/.spicetify
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# rust
+source "$HOME/.cargo/env.fish"
+
+alias code 'nu -c "zellij -l welcome --config-dir ~/.config/yazelix/zellij options --layout-dir ~/.config/yazelix/zellij/layouts"'
