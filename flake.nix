@@ -14,14 +14,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
+      url = "github:l6174/HyprPanel";
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprpanel, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
     let
-      system = "aarch64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      system = "aarch64-linux"; # Set this to your actual system architecture.
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          (final: prev: {
+            gpu-screen-recorder = null; # Exclude gpu-screen-recorder
+          })
+          hyprpanel.overlay # Adding the hyprpanel overlay from inputs.
+        ];
+      };
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -30,6 +38,7 @@
         packages = [
           pkgs.home-manager
           pkgs.git
+          pkgs.hyprpanel # Adding hyprpanel to the shell.
         ];
       };
       homeConfigurations = {
@@ -38,15 +47,7 @@
 
           modules = [
             ./home.nix
-            {
-              nixpkgs.overlays = [
-                (self: super: {
-                  hyprpanel = super.hyprpanel;
-                })
-              ];
-            }
           ];
-
         };
         programs.fish.enable = true;
         environment.shells = with pkgs; [ fish ];

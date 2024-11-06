@@ -20,5 +20,6 @@
     "editor.fontLigatures": true,
     "C_Cpp.default.compilerPath": "/usr/bin/clang",
     "workbench.activityBar.location": "hidden",
-    "window.menuBarVisibility": "compact"
+    "window.menuBarVisibility": "compact",
+    "editor.formatOnSave": true
   }
