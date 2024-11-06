@@ -2,53 +2,51 @@
   description = "Home Manager configuration for fionnbarrett";
 
   nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
-  };
+    2  };
 
-  inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Add HyprPanel as an input with an overlay
-    hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
-    };
-  };
-
-  outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
-    let
-      system = "aarch64-linux"; # Adjust to your system architecture
-
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ hyprpanel.overlay ]; # Enable the HyprPanel overlay
+    inputs = {
+      nixpkgs = {
+        url = "github:NixOS/nixpkgs/nixos-unstable";
       };
-    in
-    {
-      devShells.${system}.default = pkgs.mkShell {
-        NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
-
-        packages = [
-          pkgs.home-manager
-          pkgs.git
-        ];
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
       };
-      homeManagerConfigurations = {
-        "fionnbarrett" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+      hyprpanel = {
+        url = "github:Jas-SinghFSU/HyprPanel";
+      };
+    };
 
-          modules = [
-            ./home.nix
+    outputs = { nixpkgs, home-manager, hyprpanel, ... } @ inputs:
+      let
+        system = "aarch64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        devShells.${system}.default = pkgs.mkShell {
+          NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
+
+          packages = [
+            pkgs.home-manager
+            pkgs.git
           ];
         };
-        programs.fish.enable = true;
-        environment.shells = with pkgs; [ fish ];
-        users.defaultUserShell = pkgs.fish;
+        homeConfigurations = {
+          "fionnbarrett" = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+
+            modules = [
+              ./home.nix
+              nixpkgs.overlays = [
+              (self: super: {
+                hyprpanel = super.hyprpanel;
+              })
+            ];
+            ];
+          };
+          programs.fish.enable = true;
+          environment.shells = with pkgs; [ fish ];
+          users.defaultUserShell = pkgs.fish;
+        };
       };
-    };
-}
+  }
