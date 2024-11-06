@@ -21,7 +21,7 @@ in
     btop
     cava
     rofi
-    thunar
+    xfce.thunar
     kvantum
     bat
     hyprland
