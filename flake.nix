@@ -38,12 +38,15 @@
 
           modules = [
             ./home.nix
-            nixpkgs.overlays = [
-            (self: super: {
-              hyprpanel = super.hyprpanel;
-            })
+            {
+              nixpkgs.overlays = [
+                (self: super: {
+                  hyprpanel = super.hyprpanel;
+                })
+              ];
+            }
           ];
-          ];
+
         };
         programs.fish.enable = true;
         environment.shells = with pkgs; [ fish ];
