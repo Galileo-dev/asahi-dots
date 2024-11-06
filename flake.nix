@@ -20,7 +20,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprpanel ... }@inputs:
+  outputs = { nixpkgs, home-manager, hyprpanel, ... }@inputs:
     let
       system = "aarch64-linux";
       pkgs = nixpkgs.legacyPackages.${system};

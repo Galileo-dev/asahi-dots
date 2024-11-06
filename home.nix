@@ -24,7 +24,7 @@ in
     ".config/ags" = { source = "${dotfilesPath}/.config/ags"; recursive = true; };
   };
 
-    xdg.configFile = {
+  xdg.configFile = {
     "hypr" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/hypr"; recursive = true; };
     "fish" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/fish"; recursive = true; };
     "kitty" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/kitty"; recursive = true; };
