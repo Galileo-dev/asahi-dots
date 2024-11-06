@@ -1,10 +1,9 @@
-
 { pkgs, config, ... }:
 
 let
-  username = "fionnbarrett";  # Replace with your actual username
+  username = "fionnbarrett"; # Replace with your actual username
   homeDirectory = "/home/${username}";
-  dotfilesPath = "${homeDirectory}/hyprdots";  # Adjust if your dotfiles are located elsewhere
+  dotfilesPath = "${homeDirectory}/hyprdots"; # Adjust if your dotfiles are located elsewhere
 in
 {
   home = {
@@ -14,7 +13,19 @@ in
 
   # Install packages
   home.packages = with pkgs; [
-    fish starship helix nushell kitty btop cava rofi thunar kvantum bat hyprland hyprpanel
+    fish
+    starship
+    helix
+    nushell
+    kitty
+    btop
+    cava
+    rofi
+    thunar
+    kvantum
+    bat
+    hyprland
+    hyprpanel
   ];
 
   # Symlink files and directories

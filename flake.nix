@@ -20,11 +20,16 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, hyprpanel, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
     let
-      system = "aarch64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
+      system = "aarch64-linux"; # Adjust to your system architecture
+
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ hyprpanel.overlay ]; # Enable the HyprPanel overlay
+      };
+    in
+    {
       devShells.${system}.default = pkgs.mkShell {
         NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
 
@@ -41,9 +46,9 @@
             ./home.nix
           ];
         };
-      programs.fish.enable = true;
-      environment.shells = with pkgs; [ fish ];
-      users.defaultUserShell = pkgs.fish;
+        programs.fish.enable = true;
+        environment.shells = with pkgs; [ fish ];
+        users.defaultUserShell = pkgs.fish;
       };
     };
 }
