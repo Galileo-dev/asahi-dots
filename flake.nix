@@ -20,26 +20,30 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, hyprpanel ... }@inputs:
     let
-      system = "aarch64-linux";  # Adjust to your system architecture
-
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ hyprpanel.overlay ];  # Enable the HyprPanel overlay
-      };
+      system = "aarch64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
     in {
+      devShells.${system}.default = pkgs.mkShell {
+        NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
+
+        packages = [
+          pkgs.home-manager
+          pkgs.git
+        ];
+      };
       homeManagerConfigurations = {
-        fionnbarrett = home-manager.lib.homeManagerConfiguration {
+        "fionnbarrett" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           modules = [
             ./home.nix
-            {
-              home.stateVersion = "24.05";  # Adjust based on your Home Manager version
-            }
           ];
         };
+      programs.fish.enable = true;
+      environment.shells = with pkgs; [ fish ];
+      users.defaultUserShell = pkgs.fish;
       };
     };
 }
