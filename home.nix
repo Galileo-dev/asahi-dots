@@ -22,7 +22,7 @@ in
     cava
     rofi
     xfce.thunar
-    kvantum
+    libsForQt5.qtstyleplugin-kvantum
     bat
     hyprland
     hyprpanel
