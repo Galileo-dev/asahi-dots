@@ -24,13 +24,16 @@ in
     xfce.thunar
     libsForQt5.qtstyleplugin-kvantum
     bat
-    hyprland
     hyprpanel
   ];
 
   # Symlink files and directories
   home.file = {
-    ".icons" = { source = "${dotfilesPath}/.icons"; recursive = true; };
+    ".icons" = {
+      source = "${dotfilesPath}/.icons";
+      recursive = true;
+      target = "copy"; # Change to 'copy' instead of symlink
+    };
     ".local/bin" = { source = "${dotfilesPath}/.local/bin"; recursive = true; };
     ".config/ags" = { source = "${dotfilesPath}/.config/ags"; recursive = true; };
   };
@@ -48,9 +51,9 @@ in
     "qt5ct" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/qt5ct"; recursive = true; };
     "qt6ct" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/qt6ct"; recursive = true; };
     "Thunar" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/Thunar"; recursive = true; };
-    "VSCodium" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/VSCodium"; recursive = true; };
     "yazelix" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/yazelix"; recursive = true; };
     "starship.toml" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/starship.toml"; };
+    "VSCodium/User/settings.json" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/VSCodium/User/settings.json"; };
     "gtk-2.0/gtkfilechooser.ini" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-2.0/gtkfilechooser.ini"; };
     "gtk-3.0/settings.ini" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-3.0/settings.ini"; };
     "gtk-3.0/gtk.css" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-3.0/gtk.css"; };
