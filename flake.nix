@@ -20,14 +20,14 @@
 
   outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
     let
-      system = "aarch64-linux"; # Set this to your actual system architecture.
+      system = "aarch64-linux";
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
           (final: prev: {
-            gpu-screen-recorder = null; # Exclude gpu-screen-recorder
+            gpu-screen-recorder = null;
           })
-          hyprpanel.overlay # Adding the hyprpanel overlay from inputs.
+          hyprpanel.overlay
         ];
       };
     in
@@ -38,7 +38,7 @@
         packages = [
           pkgs.home-manager
           pkgs.git
-          pkgs.hyprpanel # Adding hyprpanel to the shell.
+          pkgs.hyprpanel
         ];
       };
       homeConfigurations = {

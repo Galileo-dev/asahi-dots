@@ -11,22 +11,6 @@ in
     stateVersion = "24.05";
   };
 
-  # Install packages
-  home.packages = with pkgs; [
-    fish
-    starship
-    helix
-    nushell
-    kitty
-    btop
-    cava
-    rofi
-    xfce.thunar
-    libsForQt5.qtstyleplugin-kvantum
-    bat
-    hyprpanel
-  ];
-
   # Symlink files and directories
   home.file = {
     ".icons" = {
@@ -35,7 +19,6 @@ in
       target = "copy"; # Change to 'copy' instead of symlink
     };
     ".local/bin" = { source = "${dotfilesPath}/.local/bin"; recursive = true; };
-    ".config/ags" = { source = "${dotfilesPath}/.config/ags"; recursive = true; };
   };
 
   xdg.configFile = {
