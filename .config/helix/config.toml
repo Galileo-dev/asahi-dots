@@ -1,0 +1,53 @@
+# theme = "onedarker"
+# theme = "tokyonight_moon"
+# theme = "noctis"
+# theme = "fleet_dark"
+# theme = "ayu_evolve"
+# theme = "dark_high_contrast"
+# theme = "bogster"
+# theme = "kaolin_valley_dark"
+# theme = "starlight"
+# theme = "sonokai"
+theme = "dracula_at_night"
+# theme = "base16_transparent"
+# theme = "night_owl"
+# theme = "term16_dark"
+# theme = "doom_acario_dark"
+
+[editor]
+cursorline = true
+color-modes = true
+bufferline = "always"
+shell = ["nu", "-c"]
+auto-format = true
+end-of-line-diagnostics = "hint"
+
+[editor.cursor-shape]
+insert = "bar"
+
+[editor.file-picker]
+hidden = true
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control"]
+center = ["file-name"]
+right = [
+  "diagnostics",
+  "selections",
+  "position",
+  "total-line-numbers",
+  "position-percentage",
+  "file-encoding",
+]
+separator = "│"
+
+[editor.indent-guides]
+render = true
+skip-levels = 1
+# character = "┆"
+
+[editor.soft-wrap]
+enable = true
+
+[editor.inline-diagnostics]
+cursor-line = "warning" # show warnings and errors on the cursorline inline

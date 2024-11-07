@@ -14,6 +14,7 @@ packages=(
     "qt5-qtstyleplugins"
     "bat"
     "hyprland"
+    "wl-clipboard"
 )
 
 # Update system before installing packages

@@ -1,0 +1,177 @@
+[language-server.nu]
+command = "nu"
+args = ["--lsp"]
+
+[language-server.gpt]
+command = "helix-gpt"
+
+[language-server.tsls]
+command = "typescript-language-server"
+args = ['--stdio']
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+[language-server.pyright.config]
+# reportMissingTypeStubs = false
+reportAttributeAccessIssue = false
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+# typeCheckingMode = "standard"
+# typeCheckingMode = "strict"
+
+[language-server.markdown-oxide]
+markdown-oxide = { command = "markdown-oxide" }
+
+[language-server.biome]
+command = "biome"
+args = ["lsp-proxy"]
+
+[[language]]
+name = "javascript"
+language-servers = [
+  { name = "tsls", except-features = ["format"] },
+  # "biome",
+  # "gpt",
+]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "typescript"
+language-servers = [{ name = "tsls", except-features = ["format"] }, "biome"]
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "tsx"
+auto-format = true
+language-servers = [{ name = "tsls", except-features = ["format"] }, "biome"]
+
+[[language]]
+name = "jsx"
+auto-format = true
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+]
+
+[[language]]
+name = "json"
+language-servers = [
+  { name = "vscode-json-language-server", except-features = [
+    "format",
+  ] },
+  "biome",
+]
+
+[[language]]
+name = "markdown"
+language-servers = [
+  "markdown-oxide",
+  # "marksman"
+]
+
+[[language]]
+name = "python"
+language-servers = ["pyright", "ruff", "gpt"]
+auto-format = true
+
+
+[[language]]
+name = "cpp"
+language-servers = ["clangd"]
+
+
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server"]
+
+[[language]]
+name = "css"
+language-servers = ["vscode-css-language-server", "gpt"]
+
+[[language]]
+name = "nu"
+scope = "source.nu"
+injection-regex = "nu"
+file-types = ["nu", "nuon"]
+shebangs = ["nu"]
+comment-token = "#"
+indent = { tab-width = 2, unit = "  " }
+language-servers = [
+  "nu",
+  # "gpt",
+]
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+auto-format = true
+
+[[language]]
+name = "c"
+auto-format = true
+
+[[language]]
+name = "ini"
+file-types = [
+  "conf",
+
+  # from https://github.com/helix-editor/helix/blob/master/languages.toml
+  "ini",
+  "service",
+  "automount",
+  "device",
+  "mount",
+  "path",
+  "service",
+  "slice",
+  "socket",
+  "swap",
+  "target",
+  "timer",
+  "container",
+  "volume",
+  "kube",
+  "network",
+]
+
+
+[[language]]
+name = "bash"
+file-types = [
+  "nginx.conf",
+
+  # from https://github.com/helix-editor/helix/blob/master/languages.toml
+  "sh",
+  "bash",
+  "zsh",
+  ".bash_login",
+  ".bash_logout",
+  ".bash_profile",
+  ".bashrc",
+  ".profile",
+  ".zshenv",
+  "zshenv",
+  ".zlogin",
+  "zlogin",
+  ".zlogout",
+  "zlogout",
+  ".zprofile",
+  "zprofile",
+  ".zshrc",
+  "zshrc",
+  ".zimrc",
+  "APKBUILD",
+  "PKGBUILD",
+  "eclass",
+  "ebuild",
+  "bazelrc",
+  ".bash_aliases",
+  "Renviron",
+  ".Renviron",
+]
