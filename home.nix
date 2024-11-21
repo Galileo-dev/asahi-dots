@@ -1,48 +1,92 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 let
+  # The dotfiles are located at the root of the flake
+  dotfilesPath = ./.;
+
+  # Your username and home directory
   username = "fionnbarrett"; # Replace with your actual username
-  homeDirectory = "/home/${username}";
-  dotfilesPath = "${homeDirectory}/hyprdots"; # Adjust if your dotfiles are located elsewhere
+  homeDirectory = "/home/${username}"; # Adjust if necessary
+
+  # List of directories inside .config to symlink
+
+  configDirs = [
+    # Window Management
+    "hypr" "zellij" "rofi" "Thunar"
+
+    # Shells
+    "fish" "nushell"
+
+    # Editors
+    "kitty" "helix" "nvim"
+
+    # UI/Theme
+    "Kvantum" "qt5ct" "qt6ct" "gtk-2.0" "gtk-3.0" "gtk-4.0" "nwg-look"
+
+    # System Tools
+    "btop" "cava" "bat" "nix" "yazelix"
+  ];
+
+  
+  # Function to create symlinked directories
+  symlinkConfigDir = dir: {
+    name = ".config/${dir}";
+    value = {
+      source = "${dotfilesPath}/.config/${dir}";
+      recursive = true;
+    };
+  };
+
 in
 {
-  home = {
-    inherit username homeDirectory;
-    stateVersion = "24.05";
-  };
+  # Specify the Home Manager state version
+  home.stateVersion = "24.05";
+ 
+  # Set your username and home directory
+  home.username = username;
+  home.homeDirectory = homeDirectory;
 
-  # Symlink files and directories
-  home.file = {
-    ".icons" = {
-      source = "${dotfilesPath}/.icons";
-      recursive = true;
-      target = "copy"; # Change to 'copy' instead of symlink
-    };
-    ".local/bin" = { source = "${dotfilesPath}/.local/bin"; recursive = true; };
-  };
-
-  xdg.configFile = {
-    "hypr" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/hypr"; recursive = true; };
-    "fish" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/fish"; recursive = true; };
-    "kitty" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/kitty"; recursive = true; };
-    "btop" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/btop"; recursive = true; };
-    "cava" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/cava"; recursive = true; };
-    "helix" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/helix"; recursive = true; };
-    "nushell" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/nushell"; recursive = true; };
-    "rofi" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/rofi"; recursive = true; };
-    "Kvantum" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/Kvantum"; recursive = true; };
-    "qt5ct" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/qt5ct"; recursive = true; };
-    "qt6ct" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/qt6ct"; recursive = true; };
-    "Thunar" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/Thunar"; recursive = true; };
-    "yazelix" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/yazelix"; recursive = true; };
-    "starship.toml" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/starship.toml"; };
-    "VSCodium/User/settings.json" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/VSCodium/User/settings.json"; };
-    "gtk-2.0/gtkfilechooser.ini" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-2.0/gtkfilechooser.ini"; };
-    "gtk-3.0/settings.ini" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-3.0/settings.ini"; };
-    "gtk-3.0/gtk.css" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-3.0/gtk.css"; };
-    "gtk-3.0/bookmarks" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-3.0/bookmarks"; };
-    "gtk-4.0/gtk.css.bak" = { source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/.config/gtk-4.0/gtk.css.bak"; };
-  };
-
+  # Enable Home Manager itself
   programs.home-manager.enable = true;
+
+  # Symlink files and directories into your home directory
+  home.file =
+    # Symlink the .icons directory (copied instead of symlinking)
+    {
+      ".icons" = {
+        source = "${dotfilesPath}/.icons";
+        recursive = true;
+      };
+      # Symlink the .local/bin directory
+      ".local/bin" = {
+        source = "${dotfilesPath}/.local/bin";
+        recursive = true;
+      };
+    }
+    # Symlink the listed .config directories
+    // builtins.listToAttrs (map symlinkConfigDir configDirs)
+    // {
+      # Symlink individual files in .config
+      ".config/starship.toml" = {
+        source = "${dotfilesPath}/.config/starship.toml";
+      };
+      # For applications like VSCode, only symlink specific settings files
+      ".config/VSCodium/User/settings.json" = {
+        source = "${dotfilesPath}/.config/VSCodium/User/settings.json";
+      };
+      ".config/VSCodium/User/keybindings.json" = {
+        source = "${dotfilesPath}/.config/VSCodium/User/keybindings.json";
+      };
+    };
+
+  # Set environment variable to specify cache directory
+  home.sessionVariables = {
+    XDG_CACHE_HOME = "$HOME/.cache";
+  };
+
+  # Enable Fish Shell and set as default shell
+  programs.fish = {
+    enable = true;
+  };
 }
+

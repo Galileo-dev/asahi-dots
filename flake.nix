@@ -1,57 +1,52 @@
 {
   description = "Home Manager configuration for fionnbarrett";
 
-  nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
-  };
-
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprpanel = {
       url = "github:l6174/HyprPanel";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprpanel, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, hyprpanel, ... }:
     let
-      system = "aarch64-linux";
+      # Specify your system architecture
+      system = "aarch64-linux"; # Change to "x86_64-linux" if you're on x86_64
+
+      # Overlays
+      overlays = [
+        hyprpanel.overlay
+        # Removed home-manager.overlay, as it doesn't exist
+      ];
+
       pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          (final: prev: {
-            gpu-screen-recorder = null;
-          })
-          hyprpanel.overlay
-        ];
+        inherit system overlays;
       };
+
     in
     {
+      # Development shell with specified packages
       devShells.${system}.default = pkgs.mkShell {
-        NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
-
         packages = [
           pkgs.home-manager
           pkgs.git
           pkgs.hyprpanel
         ];
       };
-      homeConfigurations = {
-        "fionnbarrett" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
 
-          modules = [
-            ./home.nix
-          ];
-        };
-        programs.fish.enable = true;
-        environment.shells = with pkgs; [ fish ];
-        users.defaultUserShell = pkgs.fish;
+      # Home Manager configuration
+      homeConfigurations.fionnbarrett = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        # Import your home.nix configuration
+        modules = [ ./home.nix ];
       };
     };
 }
+
