@@ -124,14 +124,4 @@
       wlogoutStyle = 1;
     };
   };
-
-  vm = {
-    # 4 GB minimum
-    memorySize = 4096;
-    # 2 cores minimum
-    cores = 2;
-    # TODO: review, it also seems to matter which vm is run
-    # 30GB minimum for one theme - 50GB for multiple themes - more for development and testing
-    diskSize = 20000;
-  };
 }

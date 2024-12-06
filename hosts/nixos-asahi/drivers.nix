@@ -1,5 +1,4 @@
 {
-  modulesPath,
   lib,
   inputs,
   ...
@@ -8,18 +7,7 @@
 {
   imports = [
     inputs.apple-silicon-support.nixosModules.apple-silicon-support
-
-    (modulesPath + "/installer/scan/not-detected.nix")
   ];
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/6A3B-1D00";
-    fsType = "vfat";
-    options = [
-      "noatime"
-      "discard"
-    ];
-  };
 
   hardware.asahi = {
     enable = true;
@@ -31,32 +19,32 @@
   };
 
   boot = {
-    binfmt.emulatedSystems = [ "x86_64-linux" ];
+    # binfmt.emulatedSystems = [ "x86_64-linux" ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = lib.mkForce false;
     };
-    kernelPatches = [
-      {
-        name = "edge-config";
-        patch = null;
-        extraConfig = ''
-          DRM_SIMPLEDRM_BACKLIGHT n
-          BACKLIGHT_GPIO n
-          DRM_APPLE m
-          APPLE_SMC m
-          APPLE_SMC_RTKIT m
-          APPLE_RTKIT m
-          APPLE_MBOX m
-          GPIO_MACSMC m
-          DRM_VGEM n
-          DRM_SCHED y
-          DRM_GEM_SHMEM_HELPER y
-          DRM_ASAHI m
-          SUSPEND y
-        '';
-      }
-    ];
+    # kernelPatches = [
+    #   {
+    #     name = "edge-config";
+    #     patch = null;
+    #     extraConfig = ''
+    #       DRM_SIMPLEDRM_BACKLIGHT n
+    #       BACKLIGHT_GPIO n
+    #       DRM_APPLE m
+    #       APPLE_SMC m
+    #       APPLE_SMC_RTKIT m
+    #       APPLE_RTKIT m
+    #       APPLE_MBOX m
+    #       GPIO_MACSMC m
+    #       DRM_VGEM n
+    #       DRM_SCHED y
+    #       DRM_GEM_SHMEM_HELPER y
+    #       DRM_ASAHI m
+    #       SUSPEND y
+    #     '';
+    #   }
+    # ];
 
     initrd = {
       availableKernelModules = [

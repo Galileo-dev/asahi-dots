@@ -13,6 +13,7 @@ inputs.nixpkgs.lib.nixosSystem {
   specialArgs = commonArgs;
   modules = [
     ./configuration.nix
+    inputs.apple-silicon-support.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager.useGlobalPkgs = true;
