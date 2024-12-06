@@ -11,6 +11,10 @@
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    apple-silicon-support = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -20,11 +24,14 @@
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
+      system = "aarch64-linux";
 
       pkgs = import inputs.nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+          inputs.apple-silicon-support.overlays.default
+        ];
       };
 
       mkConfig = import ./lib/mkConfig.nix {

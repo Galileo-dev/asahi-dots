@@ -1,23 +1,23 @@
 {
-  username = "hydenix";
-  gitUser = "hydenix";
-  gitEmail = "exampleEmail";
-  host = "hydenix";
+  username = "fionnbarrett";
+  gitUser = "galileo-dev";
+  gitEmail = "32818066+Galileo-dev@users.noreply.github.com";
+  host = "asahi";
   /*
     Default password is required for sudo support in systems
     !REMEMBER TO USE passwd TO CHANGE THE PASSWORD!
   */
   defaultPassword = "hydenix";
-  timezone = "America/Vancouver";
-  locale = "en_CA.UTF-8";
+  timezone = "Europe/Dublin";
+  locale = "en_IE.UTF-8";
 
   # hardware config - sudo nixos-generate-config --show-hardware-config > hardware-configuration.nix
   hardwareConfig = (toString ./hardware-configuration.nix);
 
   # List of drivers to install in ./hosts/nixos/drivers.nix
   drivers = [
-    "amdgpu"
-    "intel"
+    # "amdgpu"
+    # "intel"
     # "nvidia"
     # "amdcpu"
     # "intel-old"

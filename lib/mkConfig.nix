@@ -14,7 +14,7 @@ rec {
     inputs = inputs // extraInputs;
   };
 
-  nixosConfiguration = import ../hosts/nixos { inherit commonArgs; };
+  nixosConfiguration = import ../hosts/nixos-asahi { inherit commonArgs; };
 
   # TODO: wrap all vms in nixGL. openGL issues haha
   nix-vm = import ../hosts/vm/nix-vm.nix { inherit userConfig nixosConfiguration; };
@@ -29,7 +29,7 @@ rec {
     "${userConfig.username}" = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ../hosts/nixos/home.nix
+        ../hosts/nixos-asahi/home.nix
         inputs.nix-index-database.hmModules.nix-index
       ] ++ userConfig.homeModules;
       extraSpecialArgs = {
@@ -42,7 +42,7 @@ rec {
     "${userConfig.username}-generic" = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ../hosts/nixos/home.nix
+        ../hosts/nixos-asahi/home.nix
         inputs.nix-index-database.hmModules.nix-index
         {
           targets.genericLinux.enable = true;

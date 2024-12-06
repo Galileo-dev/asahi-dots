@@ -7,7 +7,7 @@
     ./theming.nix
     ./applications.nix
     ./shell.nix
-    ./gaming.nix
+    # ./gaming.nix
     ./music.nix
   ];
 }
