@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     apple-silicon-support = {
-      url = "github:tpwrules/nixos-apple-silicon";
+      url = "github:zzywysm/nixos-asahi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database.url = "github:nix-community/nix-index-database";
