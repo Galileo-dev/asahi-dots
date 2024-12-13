@@ -14,6 +14,7 @@ in
 
   imports = [
     userConfig.hardwareConfig
+    
     ./drivers.nix
   ];
 
@@ -22,7 +23,7 @@ in
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
   # disable if switching to grub
-  # boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
   #! Enable grub below, note you will have to change to the new bios boot option for settings to apply
   # boot = {
   #   loader = {
